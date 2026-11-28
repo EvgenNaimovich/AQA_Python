@@ -32,6 +32,7 @@ def test_dynamic_control(browser_chrome):
     elem_massage = time_wait.until(EC.visibility_of_element_located((By.ID, 'message')))
     assert elem_massage.text == "It's gone!", f"Ожидается 'It's gone!', получено {elem_massage.text}"
 
+    assert not browser_chrome.find_element(By.XPATH, "//*[@id='input-example']/input").is_enabled()
     checkbox = browser_chrome.find_elements(By.XPATH, "//*[@type='checkbox']")
     assert len(checkbox) == 0, f"Ожидалось, что чекбокс отсутствует на странице. Кол-во checkbox: {len(checkbox)}."
 
@@ -41,7 +42,6 @@ def test_dynamic_control(browser_chrome):
 
     elem_input = time_wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@type='text']")))
     elem_input.send_keys("Хорошего дня!")
-    sleep(1)  # помню, что нельзя так
     assert elem_input.is_enabled(), "Поле ввода не стало активным"
 
 
@@ -89,5 +89,6 @@ def test_file_download(browser_chrome):
         Path(downloads_dir).glob("*.crdownload")
     ))
     assert file_path.is_file()
+    browser_chrome.quit()
 
 
